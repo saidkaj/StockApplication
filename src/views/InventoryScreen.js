@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 
 const data = {
   "Medaxil": [
@@ -202,14 +201,7 @@ const data = {
   ]
 };
 
-const StockInScreen = () => {
-  const navigation = useNavigation();
-
-  const handleAddButtonPress = () => {
-    // Navigate to the StockAcceptScreen
-    navigation.navigate("Mal Qəbul");
-  };
-
+const InventoryScreen = () => {
   const sellers = data.Invertar.map((item) => {
     const docData = Object.values(item)[0];
     return docData.IDAnbar;
@@ -222,9 +214,8 @@ const StockInScreen = () => {
 
   return (
     <View style={styles.container}>
-
       <View style={styles.header}>
-        <Text style={styles.headerText}>Satıcı</Text>
+        <Text style={styles.headerText}>Anbar</Text>
         <Text style={styles.headerText}>Qiymət</Text>
       </View>
       <FlatList
@@ -237,9 +228,6 @@ const StockInScreen = () => {
           </View>
         )}
       />
-      <TouchableOpacity style={styles.addButton} onPress={handleAddButtonPress}>
-        <Text style={styles.addButtonText}>+</Text>
-      </TouchableOpacity>
     </View>
   );
 };
@@ -247,27 +235,16 @@ const StockInScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     padding: 20,
+    backgroundColor: '#fff',
   },
-  text: {
-    fontSize: 24,
-    marginBottom: 20,
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
   },
-  addButton: {
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
-    backgroundColor: '#007BFF',
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  addButtonText: {
-    color: '#fff',
-    fontSize: 24,
+  headerText: {
+    fontSize: 18,
     fontWeight: 'bold',
   },
   row: {
@@ -285,15 +262,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'right',
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 10,
-  },
-  headerText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
 });
 
-export default StockInScreen;
+export default InventoryScreen;

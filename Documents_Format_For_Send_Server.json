@@ -1,0 +1,199 @@
+{
+    "Medaxil": [
+        {
+            "doc1": {
+                "mdate": "01.01.0001",
+                "IDPerson": "KM000001",
+                "IDAnbar": "MS000001",
+                "DocSum": 50.00,
+                "Mallar": [
+                    {
+                        "IDmal": "KM0000001",
+                        "Say": 10,
+                        "Qiymet": 2.50,
+                        "Cemi": 25.00
+                    }
+                ]
+            }
+        },
+        {
+            "doc2": {
+                "mdate": "01.01.0001",
+                "IDPerson": "KM000002",
+                "IDAnbar": "MS000001",
+                "DocSum": 100.00,
+                "Mallar": [
+                    {
+                        "IDmal": "KM0000002",
+                        "Say": 20,
+                        "Qiymet": 2.50,
+                        "Cemi": 25.00
+                    }
+                ]
+            }
+        }
+    ],
+    "Mexaric": [
+        {
+            "doc1": {
+                "mdate": "01.01.0001",
+                "IDPerson": "KM000001",
+                "IDAnbar": "MS000001",
+                "DocSum": 50.00,
+                "Mallar": [
+                    {
+                        "IDmal": "KM0000001",
+                        "Say": 10,
+                        "Qiymet": 2.50,
+                        "Cemi": 25.00
+                    }
+                ]
+            }
+        },
+        {
+            "doc2": {
+                "mdate": "01.01.0001",
+                "IDPerson": "KM000002",
+                "IDAnbar": "MS000001",
+                "DocSum": 100.00,
+                "Mallar": [
+                    {
+                        "IDmal": "KM0000002",
+                        "Say": 20,
+                        "Qiymet": 2.50,
+                        "Cemi": 25.00
+                    }
+                ]
+            }
+        }
+    ],
+    "Satis": [
+        {
+            "doc1": {
+                "mdate": "01.01.0001",
+                "IDPerson": "KM000001",
+                "IDAnbar": "MS000001",
+                "DocSum": 50.00,
+                "Mallar": [
+                    {
+                        "IDmal": "KM0000001",
+                        "Say": 10,
+                        "Qiymet": 2.50,
+                        "Cemi": 25.00
+                    }
+                ]
+            }
+        },
+        {
+            "doc2": {
+                "mdate": "01.01.0001",
+                "IDPerson": "KM000002",
+                "IDAnbar": "MS000001",
+                "DocSum": 100.00,
+                "Mallar": [
+                    {
+                        "IDmal": "KM0000002",
+                        "Say": 20,
+                        "Qiymet": 2.50,
+                        "Cemi": 25.00
+                    }
+                ]
+            }
+        }
+    ],
+    "Invertar": [
+        {
+            "doc1": {
+                "mdate": "01.01.0001",
+                "IDAnbar": "MS000001",
+                "DocSum": 50.00,
+                "Mallar": [
+                    {
+                        "IDmal": "KM0000001",
+                        "Say": 10,
+                        "Qiymet": 2.50,
+                        "Cemi": 25.00
+                    }
+                ]
+            }
+        },
+        {
+            "doc2": {
+                "mdate": "01.01.0001",
+                "IDAnbar": "MS000001",
+                "DocSum": 50.00,
+                "Mallar": [
+                    {
+                        "IDmal": "KM0000001",
+                        "Say": 10,
+                        "Qiymet": 2.50,
+                        "Cemi": 25.00
+                    }
+                ]
+            }
+        }
+    ],
+    "Yerdeyisme": [
+        {
+            "doc1": {
+                "mdate": "01.01.0001",
+                "IDAnbarOUT": "MS000001",
+                "IDAnbarIn": "MS000002",
+                "DocSum": 50.00,
+                "Mallar": [
+                    {
+                        "IDmal": "KM0000001",
+                        "Say": 10,
+                        "Qiymet": 2.50,
+                        "Cemi": 25.00
+                    }
+                ]
+            }
+        },
+        {
+            "doc2": {
+                "mdate": "01.01.0001",
+                "IDAnbar": "MS000001",
+                "DocSum": 50.00,
+                "Mallar": [
+                    {
+                        "IDmal": "KM0000001",
+                        "Say": 10,
+                        "Qiymet": 2.50,
+                        "Cemi": 25.00
+                    }
+                ]
+            }
+        }
+    ],
+    "mDest": [
+        {
+            "doc1": {
+                "IDest": "2400000000001",
+                "DocSum": 50.00,
+                "Mallar": [
+                    {
+                        "IDmal": "KM0000001",
+                        "Say": 10,
+                        "Qiymet": 2.50,
+                        "Cemi": 25.00
+                    }
+                ]
+            }
+        },
+        {
+            "doc2": {
+                "IDest": "2400000000002",
+                "DocSum": 50.00,
+                "Mallar": [
+                    {
+                        "IDmal": "KM0000001",
+                        "Say": 10,
+                        "Qiymet": 2.50,
+                        "Cemi": 25.00
+                    }
+                ]
+            }
+        }
+    ]
+}

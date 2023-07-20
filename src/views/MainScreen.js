@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from '@react-navigation/native';
 import VerticalButtonGroup from '../components/HomeScreen/VerticalButtonGroup';
 import HorizontalButtonGroup from '../components/HomeScreen/HorizontalButtonGroup';
 
@@ -13,7 +13,12 @@ const MainScreen = () => {
 
   return (
     <View style={styles.container}>
-      <VerticalButtonGroup buttons={['Mal Qəbulu', 'İnvertar']} onPress={handleNavigationStock} />
+      {/* Vertical buttons */}
+      <VerticalButtonGroup
+        buttons={['Mal Qəbulu', 'İnvertar']}
+        onPress={handleNavigationStock}
+      />
+      {/* Horizontal buttons */}
       <HorizontalButtonGroup buttons={['Upload', 'Download']} />
     </View>
   );

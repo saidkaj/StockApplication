@@ -2,11 +2,11 @@
 import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 
-const StockField = ({ onPress }) => {
+const StockField = ({ stock, onPress }) => {
   return (
     <TouchableOpacity style={styles.fieldContainer} onPress={onPress}>
       <Text style={styles.fieldLabel}>Stock:</Text>
-      {/* Display selected stock here */}
+      <Text style={styles.fieldValue}>{stock || 'Select a stock'}</Text>
     </TouchableOpacity>
   );
 };
@@ -20,6 +20,10 @@ const styles = StyleSheet.create({
   fieldLabel: {
     fontWeight: 'bold',
     marginRight: 10,
+  },
+  fieldValue: {
+    flex: 1,
+    fontSize: 18,
   },
 });
 

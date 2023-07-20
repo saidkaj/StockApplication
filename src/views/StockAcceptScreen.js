@@ -11,26 +11,33 @@ import SubmitButton from '../components/StockAccept/SubmitButton';
 
 const StockAcceptScreen = () => {
   const [selectedPerson, setSelectedPerson] = useState(null);
+  const [selectedStock, setSelectedStock] = useState(null);
+  const [count, setCount] = useState(1);
+
+  const navigation = useNavigation();
 
   const handlePersonFieldPress = () => {
     // Navigate to PersonSelectionScreen
-    const navigation = useNavigation();
-    navigation.navigate("Person", {
+    navigation.navigate("Person Selection", {
       onSelectPerson: setSelectedPerson,
     });
   };
 
   const handleStockFieldPress = () => {
-    // Navigate to StockSelectionScreen
+
+    navigation.navigate('Stock Selection', {
+      onSelectStock: setSelectedStock,
+    });
   };
 
-  const handleIncrement = () => {
-    // Implement increment logic
+  const handleIncrement = (value) => {
+    // Increment or decrement the count based on the value (1 for increment, -1 for decrement)
+    const newCount = count + value;
+    if (newCount >= 0) {
+      setCount(newCount);
+    }
   };
 
-  const handleDecrement = () => {
-    // Implement decrement logic
-  };
 
   const handleSubmit = () => {
     // Implement submit logic
@@ -42,14 +49,27 @@ const StockAcceptScreen = () => {
 
       <View style={styles.bottomContainer}>
         <PersonField person={selectedPerson} onPress={handlePersonFieldPress} />
-        <StockField onPress={handleStockFieldPress} />
+        <StockField stock={selectedStock} onPress={handleStockFieldPress} />
         <BarcodeField />
         <ProductCard barcode="12345" productName="Sample Product" />
 
         <View style={styles.countPriceContainer}>
-          <CounterField count={1} onIncrement={handleIncrement} onDecrement={handleDecrement} />
-          <Text style={styles.price}>Price: 0.0</Text>
+          {/* "1x" text on the left */}
+          <Text style={styles.qtyText}>1x</Text>
+          
+          {/* Number field for price in the center */}
+          <View style={styles.priceField}>
+            <Text style={styles.priceText}>Price</Text>
+            <Text style={styles.priceValue}>0.0</Text>
+          </View>
+
+          {/* "AZN" text on the right */}
+          <Text style={styles.currencyText}>AZN</Text>
         </View>
+
+
+        <CounterField count={count} onIncrement={() => handleIncrement(1)} onDecrement={() => handleIncrement(-1)} />
+
 
         <SubmitButton onPress={handleSubmit} />
       </View>
@@ -75,11 +95,30 @@ const styles = StyleSheet.create({
   },
   countPriceContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center', // Center the items horizontally
     alignItems: 'center',
+    marginBottom: 20,
   },
-  price: {
+  qtyText: {
     fontSize: 18,
+    marginRight: 10,
+  },
+  priceField: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1, // Take all available space in the center
+  },
+  priceText: {
+    fontSize: 18,
+    marginRight: 5,
+  },
+  priceValue: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  currencyText: {
+    fontSize: 18,
+    marginLeft: 10,
   },
 });
 
