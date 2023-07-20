@@ -1,12 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import AddToStockButton from '../components/StockScreen/AddToStockButton';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const StockInScreen = () => {
+  const navigation = useNavigation();
+
   const handleAddButtonPress = () => {
-    // Implement the action when the "+" button is pressed
-    // For example, navigate to the "Add Stock In" screen.
-    console.log('Add button pressed');
+    // Navigate to the StockAcceptScreen
+    navigation.navigate("Mal Qəbul");
   };
 
   return (
@@ -15,7 +16,9 @@ const StockInScreen = () => {
       <Text style={styles.text}>Stock In Screen</Text>
 
       {/* Floating Action Button */}
-      <AddToStockButton onPress={handleAddButtonPress} />
+      <TouchableOpacity style={styles.addButton} onPress={handleAddButtonPress}>
+        <Text style={styles.addButtonText}>+</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -30,6 +33,22 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 24,
     marginBottom: 20,
+  },
+  addButton: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: '#007BFF',
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  addButtonText: {
+    color: '#fff',
+    fontSize: 24,
+    fontWeight: 'bold',
   },
 });
 
