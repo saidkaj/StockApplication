@@ -1,14 +1,16 @@
-// StockSelectionScreen.js
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-const StockSelectionScreen = ({ navigation, onSelectStock }) => {
+const StockSelectionScreen = ({ navigation, route }) => {
   // Sample stock list (you can replace it with your actual data)
   const [stocks] = useState(['Stock 1', 'Stock 2', 'Stock 3']);
 
   const handleSelectStock = (stock) => {
-    // Return to the StockAcceptScreen with the selected stock
+    // Get the function to set the selected stock from the route params
+    const { onSelectStock } = route.params;
+    // Call the function to set the selected stock
     onSelectStock(stock);
+    // Navigate back to the StockAcceptScreen
     navigation.goBack();
   };
 

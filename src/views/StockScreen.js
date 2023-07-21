@@ -210,12 +210,12 @@ const StockInScreen = () => {
     navigation.navigate("Mal Qəbul");
   };
 
-  const sellers = data.Invertar.map((item) => {
+  const sellers = data.Medaxil.map((item) => {
     const docData = Object.values(item)[0];
-    return docData.IDAnbar;
+    return docData.IDPerson;
   });
 
-  const prices = data.Invertar.map((item) => {
+  const prices = data.Medaxil.map((item) => {
     const docData = Object.values(item)[0];
     return docData.DocSum;
   });

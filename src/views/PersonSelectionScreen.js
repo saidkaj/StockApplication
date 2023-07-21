@@ -2,13 +2,15 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-const PersonSelectionScreen = ({ navigation, onSelectPerson }) => {
+const PersonSelectionScreen = ({ navigation, route }) => {
   // Sample person list (you can replace it with your actual data)
   const [persons] = useState(['Person 1', 'Person 2', 'Person 3']);
 
   const handleSelectPerson = (person) => {
-    // Return to the StockAcceptScreen with the selected person
+    const { onSelectPerson } = route.params;
+    // Call the function to set the selected stock
     onSelectPerson(person);
+    // Navigate back to the StockAcceptScreen
     navigation.goBack();
   };
 
