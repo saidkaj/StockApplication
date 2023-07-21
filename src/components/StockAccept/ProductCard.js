@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const ProductCard = ({ barcode, productName }) => {
+const ProductCard = ({ barcode, productName, quantity, price }) => {
   return (
     <View style={styles.productCard}>
       <Text style={styles.productLabel}>Product Barcode:</Text>
@@ -10,6 +10,12 @@ const ProductCard = ({ barcode, productName }) => {
 
       <Text style={styles.productLabel}>Product Name:</Text>
       <Text style={styles.productValue}>{productName}</Text>
+
+      <Text style={styles.productLabel}>Quantity:</Text>
+      <Text style={styles.productValue}>{quantity}</Text>
+
+      <Text style={styles.productLabel}>Price:</Text>
+      <Text style={styles.productValue}>{price}</Text>
     </View>
   );
 };

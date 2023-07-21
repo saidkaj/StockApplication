@@ -213,6 +213,8 @@ const data = {
 const StockAcceptScreen = () => {
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [selectedStock, setSelectedStock] = useState(null);
+  const [productQuantity, setProductQuantity] = useState(0);
+  const [productPrice, setProductPrice] = useState(0.0);
   const [count, setCount] = useState(1);
   const [priceValue, setPriceValue] = useState(0.0);
   const [productInfo, setProductInfo] = useState({
@@ -304,6 +306,8 @@ const StockAcceptScreen = () => {
         }));
         setCount(1); // Reset the counter to 1
         setPriceValue(foundProduct.Qiymet); // Reset the priceValue to the initial price
+        setProductQuantity(foundProduct.Say);
+        setProductPrice(foundProduct.Qiymet * foundProduct.Say);
       } else {
         // If the product is not found, reset the product name and counter to 0
         setProductInfo((prevState) => ({
@@ -335,6 +339,9 @@ const StockAcceptScreen = () => {
   };
 
 
+
+
+
   return (
     <View style={styles.container}>
       <View style={styles.container2}>
@@ -348,7 +355,7 @@ const StockAcceptScreen = () => {
         <PersonField person={selectedPerson} onPress={handlePersonFieldPress} />
         <StockField stock={selectedStock} onPress={handleStockFieldPress} />
         <BarcodeField inputRef={barcodeInputRef} onChangeText={handleBarcodeChange} />
-        <ProductCard barcode={productInfo.barcode} productName={productInfo.productName} />
+        <ProductCard barcode={productInfo.barcode} productName={productInfo.productName} quantity={productQuantity} price={productPrice} />
 
         <View style={styles.countPriceContainer}>
           {/* "1x" text on the left */}
