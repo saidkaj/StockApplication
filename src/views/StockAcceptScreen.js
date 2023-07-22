@@ -1,6 +1,6 @@
 // StockAcceptScreen.js
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, Keyboard, TextInput } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import PersonField from '../components/StockAccept/PersonField';
 import StockField from '../components/StockAccept/StockField';
@@ -10,213 +10,214 @@ import CounterField from '../components/StockAccept/CounterField';
 import SubmitButton from '../components/StockAccept/SubmitButton';
 import GetFormattedDate from '../components/StockAccept/GetData';
 
-const data = {
-  "Medaxil": [
-    {
-      "doc1": {
-        "mdate": "01.01.0001",
-        "IDPerson": "KM000001",
-        "IDAnbar": "MS000001",
-        "DocSum": 50.00,
-        "Mallar": [
-          {
-            "IDmal": "KM0000001",
-            "Say": 10,
-            "Qiymet": 2.50,
-            "Cemi": 25.00
-          }
-        ]
-      }
-    },
-    {
-      "doc2": {
-        "mdate": "01.01.0001",
-        "IDPerson": "KM000002",
-        "IDAnbar": "MS000001",
-        "DocSum": 100.00,
-        "Mallar": [
-          {
-            "IDmal": "KM0000002",
-            "Say": 20,
-            "Qiymet": 2.50,
-            "Cemi": 25.00
-          }
-        ]
-      }
-    }
-  ],
-  "Mexaric": [
-    {
-      "doc1": {
-        "mdate": "01.01.0001",
-        "IDPerson": "KM000001",
-        "IDAnbar": "MS000001",
-        "DocSum": 50.00,
-        "Mallar": [
-          {
-            "IDmal": "KM0000001",
-            "Say": 10,
-            "Qiymet": 2.50,
-            "Cemi": 25.00
-          }
-        ]
-      }
-    },
-    {
-      "doc2": {
-        "mdate": "01.01.0001",
-        "IDPerson": "KM000002",
-        "IDAnbar": "MS000001",
-        "DocSum": 100.00,
-        "Mallar": [
-          {
-            "IDmal": "KM0000002",
-            "Say": 20,
-            "Qiymet": 2.50,
-            "Cemi": 25.00
-          }
-        ]
-      }
-    }
-  ],
-  "Satis": [
-    {
-      "doc1": {
-        "mdate": "01.01.0001",
-        "IDPerson": "KM000001",
-        "IDAnbar": "MS000001",
-        "DocSum": 50.00,
-        "Mallar": [
-          {
-            "IDmal": "KM0000001",
-            "Say": 10,
-            "Qiymet": 2.50,
-            "Cemi": 25.00
-          }
-        ]
-      }
-    },
-    {
-      "doc2": {
-        "mdate": "01.01.0001",
-        "IDPerson": "KM000002",
-        "IDAnbar": "MS000001",
-        "DocSum": 100.00,
-        "Mallar": [
-          {
-            "IDmal": "KM0000002",
-            "Say": 20,
-            "Qiymet": 2.50,
-            "Cemi": 25.00
-          }
-        ]
-      }
-    }
-  ],
-  "Invertar": [
-    {
-      "doc1": {
-        "mdate": "01.01.0001",
-        "IDAnbar": "MS000001",
-        "DocSum": 50.00,
-        "Mallar": [
-          {
-            "IDmal": "KM0000001",
-            "Say": 10,
-            "Qiymet": 2.50,
-            "Cemi": 25.00
-          }
-        ]
-      }
-    },
-    {
-      "doc2": {
-        "mdate": "01.01.0001",
-        "IDAnbar": "MS000001",
-        "DocSum": 50.00,
-        "Mallar": [
-          {
-            "IDmal": "KM0000001",
-            "Say": 10,
-            "Qiymet": 2.50,
-            "Cemi": 25.00
-          }
-        ]
-      }
-    }
-  ],
-  "Yerdeyisme": [
-    {
-      "doc1": {
-        "mdate": "01.01.0001",
-        "IDAnbarOUT": "MS000001",
-        "IDAnbarIn": "MS000002",
-        "DocSum": 50.00,
-        "Mallar": [
-          {
-            "IDmal": "KM0000001",
-            "Say": 10,
-            "Qiymet": 2.50,
-            "Cemi": 25.00
-          }
-        ]
-      }
-    },
-    {
-      "doc2": {
-        "mdate": "01.01.0001",
-        "IDAnbar": "MS000001",
-        "DocSum": 50.00,
-        "Mallar": [
-          {
-            "IDmal": "KM0000001",
-            "Say": 10,
-            "Qiymet": 2.50,
-            "Cemi": 25.00
-          }
-        ]
-      }
-    }
-  ],
-  "mDest": [
-    {
-      "doc1": {
-        "IDest": "2400000000001",
-        "DocSum": 50.00,
-        "Mallar": [
-          {
-            "IDmal": "KM0000001",
-            "Say": 10,
-            "Qiymet": 2.50,
-            "Cemi": 25.00
-          }
-        ]
-      }
-    },
-    {
-      "doc2": {
-        "IDest": "2400000000002",
-        "DocSum": 50.00,
-        "Mallar": [
-          {
-            "IDmal": "KM0000001",
-            "Say": 10,
-            "Qiymet": 2.50,
-            "Cemi": 25.00
-          }
-        ]
-      }
-    }
-  ]
-};
+const productData = require('../data.json');
+// const data = {
+//   "Medaxil": [
+//     {
+//       "doc1": {
+//         "mdate": "01.01.0001",
+//         "IDPerson": "KM000001",
+//         "IDAnbar": "MS000001",
+//         "DocSum": 50.00,
+//         "Mallar": [
+//           {
+//             "IDmal": "47603196",
+//             "Say": 10,
+//             "Qiymet": 2.50,
+//             "Cemi": 25.00
+//           }
+//         ]
+//       }
+//     },
+//     {
+//       "doc2": {
+//         "mdate": "01.01.0001",
+//         "IDPerson": "KM000002",
+//         "IDAnbar": "MS000001",
+//         "DocSum": 100.00,
+//         "Mallar": [
+//           {
+//             "IDmal": "KM0000002",
+//             "Say": 20,
+//             "Qiymet": 2.50,
+//             "Cemi": 25.00
+//           }
+//         ]
+//       }
+//     }
+//   ],
+//   "Mexaric": [
+//     {
+//       "doc1": {
+//         "mdate": "01.01.0001",
+//         "IDPerson": "KM000001",
+//         "IDAnbar": "MS000001",
+//         "DocSum": 50.00,
+//         "Mallar": [
+//           {
+//             "IDmal": "KM0000001",
+//             "Say": 10,
+//             "Qiymet": 2.50,
+//             "Cemi": 25.00
+//           }
+//         ]
+//       }
+//     },
+//     {
+//       "doc2": {
+//         "mdate": "01.01.0001",
+//         "IDPerson": "KM000002",
+//         "IDAnbar": "MS000001",
+//         "DocSum": 100.00,
+//         "Mallar": [
+//           {
+//             "IDmal": "KM0000002",
+//             "Say": 20,
+//             "Qiymet": 2.50,
+//             "Cemi": 25.00
+//           }
+//         ]
+//       }
+//     }
+//   ],
+//   "Satis": [
+//     {
+//       "doc1": {
+//         "mdate": "01.01.0001",
+//         "IDPerson": "KM000001",
+//         "IDAnbar": "MS000001",
+//         "DocSum": 50.00,
+//         "Mallar": [
+//           {
+//             "IDmal": "KM0000001",
+//             "Say": 10,
+//             "Qiymet": 2.50,
+//             "Cemi": 25.00
+//           }
+//         ]
+//       }
+//     },
+//     {
+//       "doc2": {
+//         "mdate": "01.01.0001",
+//         "IDPerson": "KM000002",
+//         "IDAnbar": "MS000001",
+//         "DocSum": 100.00,
+//         "Mallar": [
+//           {
+//             "IDmal": "KM0000002",
+//             "Say": 20,
+//             "Qiymet": 2.50,
+//             "Cemi": 25.00
+//           }
+//         ]
+//       }
+//     }
+//   ],
+//   "Invertar": [
+//     {
+//       "doc1": {
+//         "mdate": "01.01.0001",
+//         "IDAnbar": "MS000001",
+//         "DocSum": 50.00,
+//         "Mallar": [
+//           {
+//             "IDmal": "KM0000001",
+//             "Say": 10,
+//             "Qiymet": 2.50,
+//             "Cemi": 25.00
+//           }
+//         ]
+//       }
+//     },
+//     {
+//       "doc2": {
+//         "mdate": "01.01.0001",
+//         "IDAnbar": "MS000001",
+//         "DocSum": 50.00,
+//         "Mallar": [
+//           {
+//             "IDmal": "KM0000001",
+//             "Say": 10,
+//             "Qiymet": 2.50,
+//             "Cemi": 25.00
+//           }
+//         ]
+//       }
+//     }
+//   ],
+//   "Yerdeyisme": [
+//     {
+//       "doc1": {
+//         "mdate": "01.01.0001",
+//         "IDAnbarOUT": "MS000001",
+//         "IDAnbarIn": "MS000002",
+//         "DocSum": 50.00,
+//         "Mallar": [
+//           {
+//             "IDmal": "KM0000001",
+//             "Say": 10,
+//             "Qiymet": 2.50,
+//             "Cemi": 25.00
+//           }
+//         ]
+//       }
+//     },
+//     {
+//       "doc2": {
+//         "mdate": "01.01.0001",
+//         "IDAnbar": "MS000001",
+//         "DocSum": 50.00,
+//         "Mallar": [
+//           {
+//             "IDmal": "KM0000001",
+//             "Say": 10,
+//             "Qiymet": 2.50,
+//             "Cemi": 25.00
+//           }
+//         ]
+//       }
+//     }
+//   ],
+//   "mDest": [
+//     {
+//       "doc1": {
+//         "IDest": "2400000000001",
+//         "DocSum": 50.00,
+//         "Mallar": [
+//           {
+//             "IDmal": "KM0000001",
+//             "Say": 10,
+//             "Qiymet": 2.50,
+//             "Cemi": 25.00
+//           }
+//         ]
+//       }
+//     },
+//     {
+//       "doc2": {
+//         "IDest": "2400000000002",
+//         "DocSum": 50.00,
+//         "Mallar": [
+//           {
+//             "IDmal": "KM0000001",
+//             "Say": 10,
+//             "Qiymet": 2.50,
+//             "Cemi": 25.00
+//           }
+//         ]
+//       }
+//     }
+//   ]
+// };
 
 const StockAcceptScreen = () => {
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [selectedStock, setSelectedStock] = useState(null);
-  const [productQuantity, setProductQuantity] = useState(0);
+  const [productCards, setProductCards] = useState([]); // Store the list of product cards
   const [productPrice, setProductPrice] = useState(0.0);
   const [count, setCount] = useState(1);
-  const [priceValue, setPriceValue] = useState(0.0);
+  const [priceValue, setPriceValue] = useState(0);
   const [productInfo, setProductInfo] = useState({
     barcode: "",
     productName: "",
@@ -255,31 +256,6 @@ const StockAcceptScreen = () => {
     }
   };
 
-
-  const handleSubmit = () => {
-    // Implement submit logic
-  };
-
-  useEffect(() => {
-    // Fetch the price value for the initial productInfo.barcode (when the barcode is initially entered)
-    const foundProduct = findProductByBarcode(productInfo.barcode);
-    if (foundProduct) {
-      setProductInfo((prevState) => ({
-        ...prevState,
-        productName: foundProduct.IDmal,
-        Qiymet: foundProduct.Qiymet, // Save the product's Qiymet in the state
-      }));
-      setPriceValue(foundProduct.Qiymet);
-    } else {
-      setProductInfo((prevState) => ({
-        ...prevState,
-        productName: "",
-        Qiymet: 0.0,
-      }));
-      setPriceValue(0.0);
-    }
-  }, [productInfo.barcode]);
-
   const handleBarcodeChange = (text) => {
     // Update the barcode input value in the state
     setProductInfo((prevState) => ({
@@ -301,13 +277,11 @@ const StockAcceptScreen = () => {
       if (foundProduct) {
         setProductInfo((prevState) => ({
           ...prevState,
-          productName: foundProduct.IDmal,
-          Qiymet: foundProduct.Qiymet,
+          productName: foundProduct.Name,
+          Qiymet: foundProduct.InPrice,
         }));
         setCount(1); // Reset the counter to 1
         setPriceValue(foundProduct.Qiymet); // Reset the priceValue to the initial price
-        setProductQuantity(foundProduct.Say);
-        setProductPrice(foundProduct.Qiymet * foundProduct.Say);
       } else {
         // If the product is not found, reset the product name and counter to 0
         setProductInfo((prevState) => ({
@@ -321,33 +295,46 @@ const StockAcceptScreen = () => {
     }
   };
   const findProductByBarcode = (barcode) => {
-    // Loop through the JSON data to find the product based on the barcode
-    for (const category in data) {
-      const products = data[category];
-      for (const product of products) {
-        for (const docKey in product) {
-          const doc = product[docKey];
-          for (const mallar of doc.Mallar) {
-            if (mallar.IDmal === barcode) {
-              return mallar;
-            }
-          }
-        }
-      }
-    }
-    return null; // Return null if the product is not found
+    const foundProduct = productData.Item.find((product) => product.Barcode === barcode);
+    return foundProduct || null;
   };
 
 
 
+  // Existing functions and useEffect
 
+  const handleAddButtonPress = () => {
+    // Create a new product card with the current productInfo
+    if (productInfo.barcode !== "" && productInfo.productName !== "" && count > 0) {
+      const newProductCard = {
+        IDmal: productInfo.barcode, // Use IDmal as Product ID
+        ProductName: productInfo.productName, // Product name
+        Qiymet: productInfo.Qiymet, // Price per item
+      };
+
+      // Add the new product card to the existing ones
+      setProductCards((prevProductCards) => [...prevProductCards, newProductCard]);
+
+      // Reset the product info and count
+      setProductInfo({
+        barcode: "",
+        productName: "",
+        Qiymet: 0.0,
+      });
+      setCount(1);
+      setPriceValue(0.0);
+    }
+  };
+
+  // Render each product card
+  const renderItem = ({ item }) => (
+    <ProductCard barcode={item.IDmal} productName={item.ProductName} quantity={item.Say} price={item.Qiymet} />
+  );
 
   return (
     <View style={styles.container}>
       <View style={styles.container2}>
-        {/* {productInfo.productName !== "" && ( */}
         <Text style={styles.productNameText}>{productInfo.productName}</Text>
-        {/* )} */}
         <Text style={styles.date}>{GetFormattedDate()}</Text>
       </View>
 
@@ -355,7 +342,16 @@ const StockAcceptScreen = () => {
         <PersonField person={selectedPerson} onPress={handlePersonFieldPress} />
         <StockField stock={selectedStock} onPress={handleStockFieldPress} />
         <BarcodeField inputRef={barcodeInputRef} onChangeText={handleBarcodeChange} />
-        <ProductCard barcode={productInfo.barcode} productName={productInfo.productName} quantity={productQuantity} price={productPrice} />
+        {/* FlatList to display the list of product cards */}
+        <View style={styles.flatListContainer}>
+          <FlatList
+            data={productCards}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => index.toString()}
+            contentContainerStyle={styles.productCardsContainer}
+            ListEmptyComponent={<Text>No Products Found</Text>}
+          />
+        </View>
 
         <View style={styles.countPriceContainer}>
           {/* "1x" text on the left */}
@@ -371,11 +367,10 @@ const StockAcceptScreen = () => {
           <Text style={styles.currencyText}>AZN</Text>
         </View>
 
-
         <CounterField count={count} onIncrement={() => handleIncrement(1)} onDecrement={() => handleIncrement(-1)} />
 
-
-        <SubmitButton onPress={handleSubmit} />
+        {/* Add button to add the current product card */}
+        <SubmitButton title="Add" onPress={handleAddButtonPress} />
       </View>
     </View>
   );
@@ -393,6 +388,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 15,
   },
+  flatListContainer: {
+    height: 300,
+  },
   date: {
     fontWeight: 'bold',
     alignSelf: 'flex-end',
@@ -400,7 +398,7 @@ const styles = StyleSheet.create({
   },
   productNameText: {
     alignSelf: 'flex-start',
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: 'bold',
   },
   bottomContainer: {
@@ -434,6 +432,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginLeft: 10,
   },
+
 });
 
 export default StockAcceptScreen;

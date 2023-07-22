@@ -24,6 +24,9 @@ const styles = StyleSheet.create({
   fieldValue: {
     flex: 1,
     fontSize: 18,
+    borderWidth: 1,
+    paddingVertical: 5,
+    paddingHorizontal: 5,
   },
 });
 

@@ -1,31 +1,40 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+
+const stocksData = require('../data.json');
 
 const StockSelectionScreen = ({ navigation, route }) => {
-  // Sample stock list (you can replace it with your actual data)
-  const [stocks] = useState(['Stock 1', 'Stock 2', 'Stock 3']);
+  const [stocks, setStocks] = useState([]);
+
+  useEffect(() => {
+    // You don't need the API fetch here since you have the data in `personsData`
+    const stockNames = stocksData.Stocks.map((stock) => stock.StockName);
+    setStocks(stockNames);
+  }, []);
 
   const handleSelectStock = (stock) => {
-    // Get the function to set the selected stock from the route params
     const { onSelectStock } = route.params;
-    // Call the function to set the selected stock
     onSelectStock(stock);
-    // Navigate back to the StockAcceptScreen
     navigation.goBack();
   };
+
+  const renderStockItem = ({ item }) => (
+    <TouchableOpacity
+      style={styles.stockItem}
+      onPress={() => handleSelectStock(item)}
+    >
+      <Text style={styles.stockText}>{item}</Text>
+    </TouchableOpacity>
+  );
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Choose a Stock</Text>
-      {stocks.map((stock) => (
-        <TouchableOpacity
-          key={stock}
-          style={styles.stockItem}
-          onPress={() => handleSelectStock(stock)}
-        >
-          <Text style={styles.stockText}>{stock}</Text>
-        </TouchableOpacity>
-      ))}
+      <FlatList
+        data={stocks}
+        renderItem={renderStockItem}
+        keyExtractor={(item) => item}
+      />
     </View>
   );
 };

@@ -19,11 +19,14 @@ const styles = StyleSheet.create({
   },
   fieldLabel: {
     fontWeight: 'bold',
-    marginRight: 10,
+    marginRight: 18,
   },
   fieldValue: {
     flex: 1,
     fontSize: 18,
+    borderWidth: 1,
+    paddingVertical: 5,
+    paddingHorizontal: 5,
   },
 });
 
