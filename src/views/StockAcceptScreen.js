@@ -1,6 +1,6 @@
 // StockAcceptScreen.js
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Keyboard } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import PersonField from '../components/StockAccept/PersonField';
 import StockField from '../components/StockAccept/StockField';
@@ -28,6 +28,21 @@ const StockAcceptScreen = () => {
   const barcodeInputRef = useRef(null);
 
   const navigation = useNavigation();
+
+  useEffect(() => {
+    const focusOnBarcodeInput = () => {
+      barcodeInputRef.current.focus();
+    };
+
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', focusOnBarcodeInput);
+
+    // Prevent keyboard from opening automatically
+    Keyboard.dismiss();
+
+    return () => {
+      keyboardDidShowListener.remove();
+    };
+  }, []);
 
   const handlePersonFieldPress = () => {
     // Navigate to PersonSelectionScreen
@@ -165,7 +180,8 @@ const StockAcceptScreen = () => {
       <View style={styles.bottomContainer}>
         <PersonField person={selectedPerson} onPress={handlePersonFieldPress} />
         <StockField stock={selectedStock} onPress={handleStockFieldPress} />
-        <BarcodeField inputRef={barcodeInputRef} onChangeText={handleBarcodeChange} />
+        <BarcodeField inputRef={barcodeInputRef} onChangeText={handleBarcodeChange} autoFocus={true}
+          autoCorrect={false} keyboardType="default" />
         {/* FlatList to display the list of product cards */}
         <View style={styles.flatListContainer}>
           <FlatList
@@ -205,6 +221,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: '#fff',
+    keyboardShouldPersistTaps: 'handled',
   },
   container2: {
     padding: 0,

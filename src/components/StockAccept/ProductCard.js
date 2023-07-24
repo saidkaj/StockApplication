@@ -149,6 +149,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 16,
     alignItems: 'center',
+    height: 200,
+    width: 250,
+    justifyContent: "center"
   },
   closeButton: {
     position: 'absolute',
@@ -187,13 +190,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 6,
     fontSize: 16,
-    minWidth: 80,
+    minWidth: 100,
     textAlign: 'center',
   },
   saveButton: {
     backgroundColor: 'green',
-    paddingHorizontal: 10,
-    paddingVertical: 6,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
     borderRadius: 6,
   },
 });

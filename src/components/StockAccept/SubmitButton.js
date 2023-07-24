@@ -5,7 +5,7 @@ import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 const SubmitButton = ({ onPress }) => {
   return (
     <TouchableOpacity onPress={onPress} style={styles.submitButton}>
-      <Text style={styles.submitButtonText}>Submit</Text>
+      <Text style={styles.submitButtonText}>Add Product</Text>
     </TouchableOpacity>
   );
 };
