@@ -10,6 +10,14 @@ const SubmitButton = ({ onPress }) => {
   );
 };
 
+const SaveButton = ({ onPress }) => {
+  return (
+    <TouchableOpacity onPress={onPress} style={styles.submitButton}>
+      <Text style={styles.submitButtonText}>Save</Text>
+    </TouchableOpacity>
+  );
+};
+
 const styles = StyleSheet.create({
   submitButton: {
     backgroundColor: '#007BFF',

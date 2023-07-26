@@ -1,6 +1,7 @@
 // StockAcceptScreen.js
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Keyboard, KeyboardAvoidingView } from 'react-native';
+import * as FileSystem from 'expo-file-system';
 import { useNavigation } from "@react-navigation/native";
 import PersonField from '../components/StockAccept/PersonField';
 import StockField from '../components/StockAccept/StockField';
@@ -9,14 +10,19 @@ import ProductCard from '../components/StockAccept/ProductCard';
 import CounterField from '../components/StockAccept/CounterField';
 import SubmitButton from '../components/StockAccept/SubmitButton';
 import GetFormattedDate from '../components/StockAccept/GetData';
+import { ScrollView } from 'react-native-gesture-handler';
+import SaveButton from '../components/StockAccept/SaveButton';
 
 const productData = require('../data.json');
 
 const StockAcceptScreen = () => {
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [selectedStock, setSelectedStock] = useState(null);
+  const [selectedPersonInfo, setSelectedPersonInfo] = useState(null);
+  const [selectedStockInfo, setSelectedStockInfo] = useState(null);
   const [productCards, setProductCards] = useState([]); // Store the list of product cards
   const [count, setCount] = useState(1);
+  const [shouldFocusBarcodeField, setShouldFocusBarcodeField] = useState(true);
   const [priceValue, setPriceValue] = useState(0);
   const [productInfo, setProductInfo] = useState({
     barcode: "",
@@ -30,47 +36,31 @@ const StockAcceptScreen = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    const focusOnBarcodeInput = () => {
+    if (shouldFocusBarcodeField && barcodeInputRef.current) {
       barcodeInputRef.current.focus();
-    };
+      setShouldFocusBarcodeField(false); // Set back to false to avoid unnecessary focus
+    }
+  }, [shouldFocusBarcodeField]);
 
-    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', focusOnBarcodeInput);
-
-    // Prevent keyboard from opening automatically
-    Keyboard.dismiss();
-
-    return () => {
-      keyboardDidShowListener.remove();
-    };
-  }, []);
 
   const handlePersonFieldPress = () => {
-    // Navigate to PersonSelectionScreen
     navigation.navigate("Person Selection", {
-      onSelectPerson: setSelectedPerson,
+      onSelectPerson: (person) => {
+        setSelectedPerson(person);
+        setSelectedPersonInfo(person); // Also store the person information here
+      },
     });
   };
 
   const handleStockFieldPress = () => {
-
     navigation.navigate('Stock Selection', {
-      onSelectStock: setSelectedStock,
+      onSelectStock: (stock) => {
+        setSelectedStock(stock);
+        setSelectedStockInfo(stock); // Also store the stock information here
+      },
     });
   };
 
-  const handleIncrement = (value) => {
-    const newCount = count + value;
-    if (newCount >= 0) {
-      setCount(newCount);
-
-      // Update the price value when incrementing or decrementing, and set it to 0 if count is 0
-      if (newCount === 0) {
-        setPriceValue(0.0);
-      } else {
-        setPriceValue(priceValue + value * productInfo.Qiymet);
-      }
-    }
-  };
 
   const handleBarcodeChange = (text) => {
     // Update the barcode input value in the state
@@ -115,10 +105,6 @@ const StockAcceptScreen = () => {
     return foundProduct || null;
   };
 
-
-
-  // Existing functions and useEffect
-
   const handleAddButtonPress = () => {
     // Create a new product card with the current productInfo
     if (productInfo.barcode !== "" && productInfo.productName !== "" && count > 0) {
@@ -141,8 +127,36 @@ const StockAcceptScreen = () => {
       });
       setCount(1);
       setPriceValue(0.0);
+      barcodeInputRef.current.clear();
+
+      barcodeInputRef.current.blur();
+      setShouldFocusBarcodeField(true);
+      Keyboard.dismiss();
+
+      setTimeout(() => {
+        barcodeInputRef.current.focus();
+      }, 100);
     }
   };
+
+  const handleSaveButtonPress = async () => {
+    // Create an object to hold the data
+    const dataToSave = {
+      selectedPerson: selectedPersonInfo,
+      selectedStock: selectedStockInfo,
+      productCards: productCards,
+    };
+
+    try {
+      const fileUri = FileSystem.documentDirectory + 'docs.json';
+      const content = JSON.stringify(dataToSave);
+      await FileSystem.writeAsStringAsync(fileUri, content);
+      console.log('Data saved to file.');
+    } catch (error) {
+      console.error('Error saving data to file:', error);
+    }
+  };
+
 
   // Render each product card
   const renderItem = ({ item }) => (
@@ -171,29 +185,31 @@ const StockAcceptScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.container2}>
-        <Text style={styles.productNameText}>{productInfo.productName}</Text>
-        <Text style={styles.date}>{GetFormattedDate()}</Text>
-      </View>
-
-      <View style={styles.bottomContainer}>
-        <PersonField person={selectedPerson} onPress={handlePersonFieldPress} />
-        <StockField stock={selectedStock} onPress={handleStockFieldPress} />
-        <BarcodeField inputRef={barcodeInputRef} onChangeText={handleBarcodeChange} autoFocus={true}
-          autoCorrect={false} keyboardType="default" />
-        {/* FlatList to display the list of product cards */}
-        <View style={styles.flatListContainer}>
-          <FlatList
-            data={productCards}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => index.toString()}
-            contentContainerStyle={styles.productCardsContainer}
-            ListEmptyComponent={<Text>No Products Found</Text>}
-          />
+    <ScrollView style={styles.scrollStyle}>
+      <View style={styles.container}>
+        <View style={styles.container2}>
+          <Text style={styles.productNameText}>{productInfo.productName}</Text>
+          <Text style={styles.date}>{GetFormattedDate()}</Text>
         </View>
 
-        {/* <View style={styles.countPriceContainer}>
+        <View style={styles.bottomContainer}>
+          <PersonField person={selectedPerson} onPress={handlePersonFieldPress} />
+          <StockField stock={selectedStock} onPress={handleStockFieldPress} />
+          <BarcodeField inputRef={barcodeInputRef} onChangeText={handleBarcodeChange}
+            autoCorrect={false} keyboardType="default" editable={!shouldFocusBarcodeField} />
+          <View style={styles.flatListContainer}>
+            <ScrollView>
+              <FlatList
+                data={productCards}
+                renderItem={renderItem}
+                keyExtractor={(item, index) => index.toString()}
+                contentContainerStyle={styles.productCardsContainer}
+                ListEmptyComponent={<Text>No Products Found</Text>}
+              />
+            </ScrollView>
+          </View>
+
+          {/* <View style={styles.countPriceContainer}>
 
           <Text style={styles.qtyText}>1x</Text>
 
@@ -209,10 +225,12 @@ const StockAcceptScreen = () => {
 
         <CounterField count={count} onIncrement={() => handleIncrement(1)} onDecrement={() => handleIncrement(-1)} /> */}
 
-        {/* Add button to add the current product card */}
-        <SubmitButton title="Add" onPress={handleAddButtonPress} />
+          {/* Add button to add the current product card */}
+          <SubmitButton title="Add" onPress={handleAddButtonPress} />
+          <SaveButton title="Save" onPress={handleSaveButtonPress} />
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -227,10 +245,10 @@ const styles = StyleSheet.create({
     padding: 0,
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 15,
+    marginBottom: 20,
   },
   flatListContainer: {
-    height: 300,
+    height: 250,
   },
   date: {
     fontWeight: 'bold',
@@ -244,13 +262,13 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     justifyContent: 'flex-end',
-    marginBottom: 20,
+    marginBottom: 50,
   },
   countPriceContainer: {
     flexDirection: 'row',
     justifyContent: 'center', // Center the items horizontally
     alignItems: 'center',
-    marginBottom: 20,
+    // marginBottom: 20,
   },
   qtyText: {
     fontSize: 18,
@@ -273,6 +291,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginLeft: 10,
   },
+  scrollStyle: {
+    flex: 1,
+  }
 
 });
 
